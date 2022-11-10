@@ -1,0 +1,7 @@
+name: os-scraper
+channels:
+  - defaults
+dependencies:
+  - scrapy
+  - autopep8
+prefix: /home/paulmilmor/anaconda3/envs/os-scraper
