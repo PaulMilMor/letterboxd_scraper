@@ -5,15 +5,17 @@ FILMS_OLDER = '//a[@class="next"]/@href'
 FILM_URL = '//li[@class="poster-container"]/div/@data-target-link'
 FILM_TITLE = '//section[@id="featured-film-header"]/h1/text()'
 FILM_YEAR = '//section[@id="featured-film-header"]/p/small/a/text()'
-# FILM_REVIEW = ''
-
+FILM_COUNTRY = '//a[contains(@href, "/country/")]/text()'
+FILM_AVG_RATING = '//meta[@name="twitter:data2"]/@content'
+FILM_LANGUAGES = '//a[contains(@href, "language")]/text()'
+FILM_LENGTH = '//p[@class="text-link text-footer"]/text()'
 
 class FilmsSpider(scrapy.Spider):
     name = 'films'
 
     custom_settings = {
         'FEEDS': {
-            'quotes.csv': {
+            'films.csv': {
                 'format': 'csv',
                 'encoding': 'utf8',
                 'store_empty': False,
@@ -67,10 +69,19 @@ class FilmsSpider(scrapy.Spider):
         rating = kwargs['rating']
         title = response.xpath(FILM_TITLE).get()
         year = response.xpath(FILM_YEAR).get()
+        # country = response.xpath(FILM_COUNTRY).get()
+        average_rating =  response.xpath(FILM_AVG_RATING).get().split(' ')[0]
+        language = response.xpath(FILM_LANGUAGES).get()
+        length = response.xpath(FILM_LENGTH).get()
+        length = [int(s) for s in length.split() if s.isdigit()][0]
 
         yield {
             'url': link,
             'title': title,
             'year': year,
-            'rating': rating
+            'length (mins)': length,
+            'rating': rating,
+            # 'country': country,
+            'average_rating': average_rating,
+            'language': language
         }
