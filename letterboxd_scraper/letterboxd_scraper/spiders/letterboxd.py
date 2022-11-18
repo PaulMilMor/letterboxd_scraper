@@ -1,5 +1,6 @@
 import scrapy
 
+# The above code is using xpath to find the information we want from the website.
 FILMS_OLDER = '//a[@class="next"]/@href'
 
 FILM_URL = '//li[@class="poster-container"]/div/@data-target-link'
@@ -16,6 +17,8 @@ FILM_DIRECTOR = '//a[contains(@href, "/director/")]/text()'
 FILM_COMPOSER = '//a[contains(@href, "/composer/")]/text()'
 FILM_CAST = '//a[contains(@href, "/actor/")]/text()'
 
+# This class is a subclass of the scrapy.Spider class. It has a name, custom settings, and a
+# constructor that takes in a start_url argument
 class FilmsSpider(scrapy.Spider):
     name = 'films'
 
@@ -46,6 +49,13 @@ class FilmsSpider(scrapy.Spider):
 
 
     def parse(self, response):
+        """
+        We're going to get all the film links on the page, and then for each link, we're going to get
+        the rating, and then we're going to follow the link to the film page, and then we're going to
+        parse the film page
+        
+        :param response: the response object that was returned from the previous callback
+        """
 
         films = response.xpath(FILM_URL).getall()
         next_page_button = response.xpath(FILMS_OLDER).get()
@@ -73,6 +83,13 @@ class FilmsSpider(scrapy.Spider):
 
 
     def parse_film(self, response, **kwargs):
+        """
+        The function takes in a response object and a dictionary of keyword arguments. It then extracts
+        the title, year, length, average rating, country, language, studio, genres, themes, director,
+        composer, and cast of the film. It then returns a dictionary of the extracted information
+        
+        :param response: the response object that was returned from the URL request
+        """
         if kwargs:
             link = kwargs['url']
             rating = kwargs['rating']
