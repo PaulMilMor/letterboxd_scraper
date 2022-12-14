@@ -1,3 +1,5 @@
 *.csv
-*.html
+/letterboxd_scraper/*.html
+/*.html
+*.json
 __pycache__/
