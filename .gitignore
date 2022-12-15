@@ -1,5 +1,5 @@
 *.csv
 /letterboxd_scraper/*.html
 /*.html
-*.json
+/letterboxd_scraper/*.json
 __pycache__/
