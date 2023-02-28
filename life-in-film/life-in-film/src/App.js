@@ -1,26 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
 import MainLayout from './components/mainLayout';
+import ReadFile from './components/readFile';
+import { useState } from 'react';
 
 function App() {
+
+
+  const [file, setFile] = useState(null);
+  const [jsonFile, setJsonFile] = useState(null);
+  const [error, setError] = useState(null);
+  
+  const handleChange = (file) => {
+    
+    setFile(file);
+
+    let reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = (evt) => {
+        setJsonFile(JSON.parse(evt.target.result));
+    }
+    reader.onerror = (evt) => {
+        console.log('onerrror');
+    }
+
+  }
+
+  const clearSelection  = (error = null) => {
+    
+    setError(error);
+    setFile(null);
+    setJsonFile(null);
+  }
+
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-    <MainLayout/>
+    jsonFile ?
+      <MainLayout data={jsonFile} setFile={clearSelection}/> :
+      <ReadFile handleChange={handleChange} error={error}/>
+
+
   );
 }
 

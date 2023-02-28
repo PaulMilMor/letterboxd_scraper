@@ -12,9 +12,7 @@ const TableSection = ({
 
 
     const customTable = (data, type) => {
-        console.log('data');
-        console.log(data);
-
+        
         return (
             <Table size="small" sx={{ mt: 2}}>
                 <TableBody>
